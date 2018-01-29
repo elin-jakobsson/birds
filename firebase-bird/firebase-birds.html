@@ -20,11 +20,15 @@
 
   // Här börjar din egna kod
 
-  let db = firebase.database();
+  const db = firebase.database();
 
   let object = {  // exempel objekt
-	name: 'David',
-	profileURL: 'http://somewhere.com/picture.png'
+	ras: 'kungsfågel',
+  colors: ['gul', 'grön', 'grå'],
+  wingspan: '1 dm',
+  gender: 'male',
+  origin: 'England'
+
 };
 db.ref('/').push(object);
 
