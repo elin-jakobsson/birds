@@ -4,7 +4,43 @@
     <meta charset="utf-8">
     <title>Firebase Birds</title>
 
+    <style>
 
+      body, html{
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body{
+        background-color: #f4f4f4;
+        font-family: verdana, sans-serif;
+        padding-left: 30px;
+      }
+      form>*{
+        display: block;
+        padding: 5px;
+      }
+
+      #submit{
+
+        background-color: orange;
+        color: #000;
+        font-weight: bold;
+
+        border-radius: 5px;
+        margin-top: 1rem;
+        padding: 0.5rem 4.1rem;
+
+      }
+
+      .birdGroup{
+        background-color: #fff;
+        border-radius: 5px;
+
+      }
+
+
+    </style>
 <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
 <script>
   // Initialize Firebase
@@ -22,23 +58,76 @@
 
   const db = firebase.database();
 
-  let object = {  // exempel objekt
-	ras: 'kungsfågel',
-  colors: ['gul', 'grön', 'grå'],
-  wingspan: '1 dm',
-  gender: 'male',
-  origin: 'England'
+  window.addEventListener('load', myFunction);
 
-};
-db.ref('/').push(object);
+ function myFunction(event){
+   let ras = document.getElementById('ras');
+   let ving = document.getElementById('ving');
+   let foda = document.getElementById('foda');
+   let ur = document.getElementById('ursprung');
+
+   let submit = document.getElementById('submit');
+
+   submit.addEventListener('click', function(event){
+
+     let object = {  // fågel
+      ras: `${ras.value}`,
+       föda: `${foda.value}`,
+       vingspan: `${ving.value}`,
+       ursprung: `${ur.value}`
+
+     };
+     db.ref('/').push(object)
+
+   });
+
+ /*  let object = {  // exempel objekt
+  ras: 'kungsfågel',
+   föda: 'mask',
+   vingspan: '1 dm',
+   ursprung: 'England'
+
+ };
+ db.ref('/').push(object);*/
+
+ db.ref('/').on('value', function(snapshot) {
+  let allData = snapshot.val(); //hämta data
+  for( let bird in allData ) {
+    //let str = JSON
+    console.log(allData[bird]);
 
 
 
+
+    }
+  });
+
+
+ }
 
 </script>
 
   </head>
   <body>
+    <h1>Firebase birds Övning</h1>
+      <form >
+        <label for="ras">Ras</label>
+        <input id="ras" type="text" name="ras" value="">
+        <label  for="foda">Föda</label>
+        <input id="foda" type="text" name="foda" value="">
+        <label  for="ving">Vingspan</label>
+        <input id="ving"  type="text" name="ving" value="">
+        <label  for="ursprung">Ursprung</label>
+        <input id="ursprung"  type="text" name="ursprung" value="">
+
+
+        <button id="submit" type="button" name="button">Submit</button>
+      </form>
+
+    <div id="birdGroup">
+
+
+    </div>
 
   </body>
 </html>
