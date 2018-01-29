@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Firebase Birds</title>
+
+
+<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCjSGWcGHEc_8lu8IM_ZFuwjJIIca8Xad4",
+    authDomain: "ovning-firebase.firebaseapp.com",
+    databaseURL: "https://ovning-firebase.firebaseio.com",
+    projectId: "ovning-firebase",
+    storageBucket: "ovning-firebase.appspot.com",
+    messagingSenderId: "336749620736"
+  };
+  firebase.initializeApp(config);
+
+  // Här börjar din egna kod
+
+  let db = firebase.database();
+
+  let object = {  // exempel objekt
+	name: 'David',
+	profileURL: 'http://somewhere.com/picture.png'
+};
+db.ref('/').push(object);
+
+
+
+
+</script>
+
+  </head>
+  <body>
+
+  </body>
+</html>
