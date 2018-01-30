@@ -21,8 +21,19 @@
         padding: 5px;
       }
 
-      #submit{
+      .formDiv{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      .input{
 
+      }
+      .change{
+
+      }
+
+      #submit{
         background-color: orange;
         color: #000;
         font-weight: bold;
@@ -30,17 +41,61 @@
         border-radius: 5px;
         margin-top: 1rem;
         padding: 0.5rem 4.1rem;
+      }
+      #change{
+        background-color: powderblue;
+        color: #000;
+        font-weight: bold;
 
+        border-radius: 5px;
+        margin-top: 1rem;
+        padding: 0.5rem 4.1rem;
       }
 
-      .birdGroup{
+      #birdGroup{
+        min-height: 80px;
+        width: 90%;
+        margin-top: 1rem;
+
         background-color: #fff;
         border-radius: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-between;
 
       }
 
+      img{
+        width: 200px;
+      }
+
+      .birds{
+        border: 3px solid #f4f4f4;
+        border-radius: 10px;
+        margin: 2rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.4);
+      }
+
+      .birdUl{
+
+        list-style: none;
+
+
+      }
+      .birdUl>li>strong{
+        margin: 10px 0;
+        text-transform: capitalize;
+        font-size: 2rem;
+        font-family: monospace;
+      }
 
     </style>
+
 <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
 <script>
   // Initialize Firebase
@@ -56,50 +111,73 @@
 
   // Här börjar din egna kod
 
-  const db = firebase.database();
+  const db = firebase.database(); //för att kunna uppdatera databesen i firebase
 
   window.addEventListener('load', myFunction);
 
- function myFunction(event){
-   let ras = document.getElementById('ras');
-   let ving = document.getElementById('ving');
-   let foda = document.getElementById('foda');
-   let ur = document.getElementById('ursprung');
+  function myFunction(event){
+    let ras = document.getElementById('ras');
+    let ving = document.getElementById('ving');
+    let foda = document.getElementById('foda');
+    let ur = document.getElementById('ursprung');
+    let birdDiv = document.getElementById('birdGroup');
+    let img = 'bird.jpg';
+    console.log(birdDiv);
 
-   let submit = document.getElementById('submit');
+    let submit = document.getElementById('submit');
+    let change = document.getElementById('change');
 
-   submit.addEventListener('click', function(event){
+    submit.addEventListener('click', function(event){
 
-     let object = {  // fågel
-      ras: `${ras.value}`,
-       föda: `${foda.value}`,
-       vingspan: `${ving.value}`,
-       ursprung: `${ur.value}`
-
+      let object = {  // fågel
+        ras: ras.value,
+        föda: foda.value,
+        vingspan: ving.value,
+        ursprung: ur.value
      };
      db.ref('/').push(object)
 
    });
+  /* change.addEventListener('click', function(event){
 
- /*  let object = {  // exempel objekt
-  ras: 'kungsfågel',
-   föda: 'mask',
-   vingspan: '1 dm',
-   ursprung: 'England'
+     if (true) {
 
- };
- db.ref('/').push(object);*/
+     }
+     let object = {  // fågel
+       ras: ras.value,
+       föda: foda.value,
+       vingspan: ving.value,
+       ursprung: ur.value
+    };
+    db.ref('/').set(object)
+
+  });*/
+
 
  db.ref('/').on('value', function(snapshot) {
   let allData = snapshot.val(); //hämta data
+  birdDiv.innerHTML = '';
+  let birdInfo = '';
+  let str;
   for( let bird in allData ) {
-    //let str = JSON
-    console.log(allData[bird]);
 
+  	console.log(`allData har en property som heter ${bird}`);
+  	console.log('värdet är:' , allData[bird]);
+    str = allData[bird];
 
-
+    birdInfo +=
+      `<div class="birds">
+        <img src=${img} alt="Bird image">
+        <ul class="birdUl">
+          <li> <strong>${str.ras}</strong></li>
+          <li> Vingspan: ${str.vingspan}</li>
+          <li> Föda: ${str.föda}</li>
+          <li> Ursprung: ${str.ursprung}</li>
+        </ul>
+        </div>`;
 
     }
+    birdDiv.innerHTML = birdInfo;
   });
 
 
@@ -110,7 +188,8 @@
   </head>
   <body>
     <h1>Firebase birds Övning</h1>
-      <form >
+    <div class="formDiv">
+      <form class="input">
         <label for="ras">Ras</label>
         <input id="ras" type="text" name="ras" value="">
         <label  for="foda">Föda</label>
@@ -120,9 +199,23 @@
         <label  for="ursprung">Ursprung</label>
         <input id="ursprung"  type="text" name="ursprung" value="">
 
-
         <button id="submit" type="button" name="button">Submit</button>
       </form>
+
+      <form class="change">
+        <label for="ras">Ras</label>
+        <input id="ras" type="text" name="ras" value="">
+        <label  for="foda">Föda</label>
+        <input id="foda" type="text" name="foda" value="">
+        <label  for="ving">Vingspan</label>
+        <input id="ving"  type="text" name="ving" value="">
+        <label  for="ursprung">Ursprung</label>
+        <input id="ursprung"  type="text" name="ursprung" value="">
+
+        <button id="change" type="button" name="button">Change</button>
+      </form>
+    </div>
+
 
     <div id="birdGroup">
 
